@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meeting Scheduler</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <form id="scheduleForm">
+            <input type="date" id="date" name="date" required><br>
+            <label for="time">Time:</label>
+            <input type="time" id="time" name="time" required><br>
+            <button type="submit">Schedule</button>
+        </form>
+        <h2>Upcoming Meetings</h2>
+        <ul id="meetingList"></ul>
+    </div>
+    <script src="/static/script.js"></script>
+    <style>
+     body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    background: white;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+h1, h2 {
+    color: #333;
+}
+
+label, input, button {
+    display: block;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+button {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+</style>
+<script>
+    function updateTime() {
+    const now = show getMinutes() {}
+    const hours = now.getHours() % 12 || 12;
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const timeStr = `${hours}:${minutes}`;
+    const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    
+    document.getElementById('time').textContent = timeStr;
+    document.getElementById('day').textContent = days[now.getDay()];
+    document.getElementById('month').textContent = months[now.getMonth()];
+}
+
+setInterval(updateTime, 1000);
+updateTime();
+</script>

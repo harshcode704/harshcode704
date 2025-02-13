@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>AI Chatbot</title>
+</head>
+<body>
+    <div class="container">
+        <h1>AI Chatbot</h1>
+        <div id="chatbox"></div>
+        <input type="text" id="user-input" placeholder="Type your message...">
+        <button onclick="sendMessage()">Send</button>
+    </div>
+    <script>
+        function sendMessage() {
+            const userInput = document.getElementById('user-input').value;
+            document.getElementById('chatbox').innerHTML += `<div>You: ${userInput}</div>`;
+            fetch('/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `message=${encodeURIComponent(userInput)}`,
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('chatbox').innerHTML += `<div>AI: ${data.response}</div>`;
+                document.getElementById('user-input').value = '';
+            });
+        }
+    </script>
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    text-align: center;
+}
+
+#chatbox {
+    height: 200px;
+    overflow-y: auto;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    padding: 10px;
+}
+
+input[type="text"] {
+    width: 70%;
+    padding: 5px;
+}
+
+button {
+    padding: 5px 10px;
+    border: none;
+    background-color: #007BFF;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+</style>
+<Py-script
+from flask import Flask, render_template, request, jsonify
+
+app = Flask(__name__)
+
+# Basic responses for the chatbot
+responses = {
+    "hello": "Hello! How can I help you?",
+    "how are you?": "I'm just a computer program, but thanks for asking!",
+    "bye": "Goodbye! Have a great day!",
+}
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+@app.route('/chat', methods=['POST'])
+def chat():
+    user_input = request.form['message'].lower()
+    response = responses.get(user_input, "I'm sorry, I don't understand that.")
+    return jsonify({'response': response})
+
+if __name__ == "__main__":
+    app.run(debug=True)
+    ></Py-script>
+</body>
+</html>
